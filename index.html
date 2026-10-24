@@ -32,71 +32,84 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ---------- canvas ---------- */
     .webgl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; outline: none; }
 
-    /* ---------- romantic gradient wash ---------- */
     .bg-glow {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
       background:
         radial-gradient(ellipse 80% 55% at 50% 75%, rgba(255, 60, 130, 0.14) 0%, transparent 65%),
         radial-gradient(ellipse 60% 40% at 50% 15%, rgba(180, 40, 100, 0.12) 0%, transparent 70%);
     }
 
-    /* ---------- vignette ---------- */
     .vignette {
       position: fixed; inset: 0; pointer-events: none; z-index: 2;
       background: radial-gradient(circle at 50% 45%,
-        rgba(0, 0, 0, 0) 30%,
-        rgba(12, 0, 6, 0.40) 68%,
-        rgba(8, 0, 5, 0.90) 100%);
+        rgba(0, 0, 0, 0) 30%, rgba(12, 0, 6, 0.40) 68%, rgba(8, 0, 5, 0.90) 100%);
     }
 
-    /* ---------- decorative frame ---------- */
     body::before {
       content: "";
       position: fixed;
       inset: max(10px, 1.5vmin);
       border: 1.5px solid rgba(255, 160, 200, 0.28);
       border-radius: 8px;
-      box-shadow:
-        0 0 40px rgba(255, 90, 150, 0.14) inset,
-        0 0 18px rgba(255, 120, 170, 0.10);
+      box-shadow: 0 0 40px rgba(255, 90, 150, 0.14) inset, 0 0 18px rgba(255, 120, 170, 0.10);
       pointer-events: none;
       z-index: 100;
     }
 
-    /* ---------- romantic title ---------- */
+    /* ---------- Falling stickers / flowers ---------- */
+    .falling-item {
+      position: fixed;
+      top: -80px;
+      pointer-events: none;
+      z-index: 40;
+      animation-name: fallDown;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+      filter: drop-shadow(0 0 10px rgba(255, 100, 160, 0.55));
+      will-change: transform, opacity;
+      user-select: none;
+    }
+
+    @keyframes fallDown {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        opacity: 0;
+      }
+      8% {
+        opacity: 1;
+      }
+      50% {
+        transform: translate3d(var(--sway, 0px), 50vh, 0) rotate(calc(var(--rot, 360deg) * 0.5));
+      }
+      100% {
+        transform: translate3d(0, calc(100vh + 100px), 0) rotate(var(--rot, 360deg));
+        opacity: 0;
+      }
+    }
+
+    /* ---------- Title ---------- */
     .h1text {
       position: absolute;
       top: calc(env(safe-area-inset-top, 0px) + 5.5vh);
-      left: 1rem;
-      right: 1rem;
+      left: 1rem; right: 1rem;
       text-align: center;
       z-index: 20;
       pointer-events: none;
       line-height: 1;
     }
-
     .h1text .line1 {
       display: block;
       font-family: "Cormorant Garamond", serif;
-      font-style: italic;
-      font-weight: 300;
+      font-style: italic; font-weight: 300;
       font-size: clamp(0.95rem, 2.7vh, 1.5rem);
       letter-spacing: 0.38em;
       text-transform: uppercase;
       color: rgba(255, 215, 232, 0.92);
-      margin-bottom: 0.55em;
-      margin-right: -0.38em; /* balance letter-spacing */
-      text-shadow:
-        0 0 18px rgba(255, 90, 150, 0.85),
-        0 0 40px rgba(255, 55, 115, 0.45);
+      margin-bottom: 0.55em; margin-right: -0.38em;
+      text-shadow: 0 0 18px rgba(255, 90, 150, 0.85), 0 0 40px rgba(255, 55, 115, 0.45);
     }
-
     .h1text .line2 {
       display: block;
       font-family: "Great Vibes", cursive;
@@ -110,9 +123,7 @@
         0 0 100px rgba(255, 40, 100, 0.35),
         0 3px 16px rgba(0, 0, 0, 0.6);
       animation: textHeartbeat 2.6s ease-in-out infinite;
-      will-change: transform;
     }
-
     @keyframes textHeartbeat {
       0%, 100% { transform: scale(1); }
       12%      { transform: scale(1.035); }
@@ -121,7 +132,114 @@
       52%      { transform: scale(1); }
     }
 
-    /* ---------- heart play button ---------- */
+    /* ---------- Love section ---------- */
+    #love-section {
+      position: absolute;
+      left: 50%;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + max(20vh, 140px));
+      transform: translateX(-50%);
+      z-index: 25;
+      text-align: center;
+      width: 100%;
+      max-width: 520px;
+      padding: 0 1rem;
+      pointer-events: none;
+    }
+    #love-section > * { pointer-events: auto; }
+
+    #love-question {
+      padding: 14px 34px;
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(1.15rem, 3vh, 1.6rem);
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(255, 100, 160, 0.95), rgba(255, 40, 110, 0.95));
+      border: 2px solid rgba(255, 200, 220, 0.65);
+      border-radius: 50px;
+      box-shadow: 0 0 26px rgba(255, 80, 145, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      animation: questionPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes questionPulse {
+      0%, 100% {
+        box-shadow: 0 0 26px rgba(255, 80, 145, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.15);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 44px rgba(255, 80, 145, 0.95), inset 0 0 26px rgba(255, 255, 255, 0.25);
+        transform: scale(1.03);
+      }
+    }
+    #love-question:hover { transform: scale(1.06); }
+    #love-question.hidden,
+    #answer-area.hidden { display: none; }
+
+    #answer-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.5s ease;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #yes-btn {
+      padding: 14px 38px;
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(1.2rem, 3.2vh, 1.7rem);
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #ff4d88, #ff1e5a);
+      border: 2px solid rgba(255, 200, 220, 0.7);
+      border-radius: 50px;
+      box-shadow: 0 0 26px rgba(255, 60, 120, 0.7), inset 0 0 20px rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      animation: yesPulse 2s ease-in-out infinite;
+      transition: transform 0.2s ease;
+    }
+    @keyframes yesPulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.06); }
+    }
+    #yes-btn:hover  { transform: scale(1.10); }
+    #yes-btn:active { transform: scale(0.95); }
+
+    #no-btn {
+      padding: 10px 26px;
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(1rem, 2.4vh, 1.3rem);
+      font-weight: 600;
+      color: rgba(255, 220, 230, 0.75);
+      background: rgba(80, 20, 40, 0.5);
+      border: 1.5px solid rgba(200, 150, 170, 0.5);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.2s ease;
+      will-change: transform;
+    }
+    #no-btn.dodging { animation: dodgeFlash 0.4s ease; }
+    @keyframes dodgeFlash {
+      0%   { filter: brightness(1.6) drop-shadow(0 0 20px rgba(255, 100, 150, 0.95)); }
+      100% { filter: brightness(1)   drop-shadow(0 0 12px rgba(255, 100, 150, 0.5));  }
+    }
+
+    .final-msg {
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(1.3rem, 4vh, 2rem);
+      font-weight: 600;
+      color: #ffe6ef;
+      text-shadow: 0 0 20px rgba(255, 100, 160, 0.9);
+      animation: fadeInUp 0.7s ease;
+      padding: 0 1rem;
+      line-height: 1.3;
+    }
+
+    /* ---------- Music button ---------- */
     #play-music {
       position: absolute;
       left: 50%;
@@ -151,22 +269,18 @@
         inset 0 0 24px rgba(255, 140, 185, 0.22);
       transition: opacity 0.7s ease, transform 0.5s cubic-bezier(.2, .8, .3, 1), box-shadow 0.4s ease;
     }
-
     #play-music:hover {
       box-shadow:
         0 0 42px rgba(255, 90, 155, 0.65),
         0 0 90px rgba(255, 50, 120, 0.30),
         inset 0 0 30px rgba(255, 150, 195, 0.30);
     }
-
     #play-music svg {
-      width: 54%;
-      height: 54%;
+      width: 54%; height: 54%;
       filter: drop-shadow(0 0 14px rgba(255, 110, 165, 1));
       pointer-events: none;
       animation: heartPulse 1.4s ease-in-out infinite;
     }
-
     @keyframes heartPulse {
       0%, 100% { transform: scale(1); }
       14%      { transform: scale(1.16); }
@@ -174,24 +288,19 @@
       42%      { transform: scale(1.06); }
       56%      { transform: scale(1); }
     }
-
     #play-music:active { transform: translateX(-50%) scale(0.92); }
     #play-music.hidden {
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0; pointer-events: none;
       transform: translateX(-50%) scale(0.6);
     }
 
-    /* ---------- hint text ---------- */
     .hint {
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 50%; transform: translateX(-50%);
       bottom: calc(env(safe-area-inset-bottom, 0px) + max(7vh, 58px) - 34px);
       font-family: "Dancing Script", cursive;
       font-weight: 600;
       font-size: clamp(0.9rem, 2.1vh, 1.15rem);
-      letter-spacing: 0.02em;
       color: rgba(255, 200, 222, 0.78);
       z-index: 30;
       pointer-events: none;
@@ -203,16 +312,19 @@
     .hint.hidden { opacity: 0; }
     .hint.error  { color: rgba(255, 150, 150, 0.9); }
 
-    /* ---------- mobile tweaks ---------- */
     @media (max-width: 480px) {
       .h1text { top: calc(env(safe-area-inset-top, 0px) + 4.5vh); }
       .h1text .line1 { letter-spacing: 0.30em; }
+    }
+    @media (max-height: 600px) {
+      #love-section { bottom: calc(env(safe-area-inset-bottom, 0px) + max(17vh, 120px)); }
     }
     @media (max-height: 520px) {
       .h1text { top: calc(env(safe-area-inset-top, 0px) + 2.5vh); }
       .h1text .line2 { font-size: clamp(2.4rem, 9vh, 4rem); }
       #play-music { bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); }
       .hint { bottom: calc(env(safe-area-inset-bottom, 0px) + 0px); }
+      #love-section { bottom: calc(env(safe-area-inset-bottom, 0px) + 110px); }
     }
   </style>
 </head>
@@ -228,6 +340,16 @@
     <span class="line2">babe</span>
   </h1>
 
+  <!-- Love question -->
+  <div id="love-section">
+    <button id="love-question" type="button">Do you love me? 💕</button>
+    <div id="answer-area" class="hidden">
+      <button id="yes-btn" type="button">Yes 💖</button>
+      <button id="no-btn" type="button">No 💔</button>
+    </div>
+  </div>
+
+  <!-- Music -->
   <button id="play-music" type="button" aria-label="Play music">
     <svg viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -235,7 +357,6 @@
   </button>
   <div class="hint" id="hint">tap to play, my love</div>
 
-  <!-- ======================= IMPORTS ======================= -->
   <script type="importmap">
   {
     "imports": {
@@ -244,12 +365,11 @@
   }
   </script>
 
-  <!-- ======================= APP ======================= -->
   <script type="module">
     import * as THREE from 'three';
 
     /* ==========================================================
-       🎵  MUSIC — multiple mirrors for reliability
+       🎵  MUSIC
        ========================================================== */
     const MUSIC_URLS = [
       "https://files.catbox.moe/ubrunz.mp3",
@@ -257,7 +377,14 @@
     ];
 
     /* ==========================================================
-       DEVICE DETECTION
+       💌  WHATSAPP
+       ========================================================== */
+    const WHATSAPP_NUMBER = "254116266407";
+    const MSG_YES = "YES! I love you! 💖💕";
+    const MSG_NO  = "No... 😢";
+
+    /* ==========================================================
+       DEVICE
        ========================================================== */
     const isSmall = window.matchMedia("(max-width: 820px)").matches;
     const lowEnd = isSmall && (
@@ -303,7 +430,7 @@
     fitCamera();
 
     /* ==========================================================
-       ENVIRONMENT (warm rose-gold studio)
+       ENVIRONMENT
        ========================================================== */
     function makeEnvTexture() {
       const c = document.createElement("canvas");
@@ -317,13 +444,9 @@
       g.addColorStop(0.62, "#ff9ec4");
       g.addColorStop(0.74, "#5a0b28");
       g.addColorStop(1.00, "#0a0003");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, 1024, 512);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 1024, 512);
 
-      const tints = [
-        "255,242,248", "255,205,225", "255,225,190",
-        "230,215,255", "255,255,255", "255,190,215"
-      ];
+      const tints = ["255,242,248", "255,205,225", "255,225,190", "230,215,255", "255,255,255", "255,190,215"];
       for (let i = 0; i < 20; i++) {
         const x = Math.random() * 1024;
         const y = 40 + Math.random() * 400;
@@ -350,17 +473,10 @@
     /* ==========================================================
        LIGHTS
        ========================================================== */
-    const keyLight = new THREE.DirectionalLight(0xffe3ee, 2.6);
-    keyLight.position.set(3.5, 4.5, 5); scene.add(keyLight);
-
-    const rimLight = new THREE.DirectionalLight(0xb9c8ff, 2.0);
-    rimLight.position.set(-4.5, -2.5, -3.5); scene.add(rimLight);
-
-    const fillLight = new THREE.DirectionalLight(0xffb38a, 1.4);
-    fillLight.position.set(-3, 4, 2); scene.add(fillLight);
-
-    const innerLight = new THREE.PointLight(0xff2f70, 6, 9, 2);
-    innerLight.position.set(0, 0, 0); scene.add(innerLight);
+    const keyLight = new THREE.DirectionalLight(0xffe3ee, 2.6); keyLight.position.set(3.5, 4.5, 5); scene.add(keyLight);
+    const rimLight = new THREE.DirectionalLight(0xb9c8ff, 2.0); rimLight.position.set(-4.5, -2.5, -3.5); scene.add(rimLight);
+    const fillLight = new THREE.DirectionalLight(0xffb38a, 1.4); fillLight.position.set(-3, 4, 2); scene.add(fillLight);
+    const innerLight = new THREE.PointLight(0xff2f70, 6, 9, 2); innerLight.position.set(0, 0, 0); scene.add(innerLight);
 
     /* ==========================================================
        HEART SHAPE
@@ -392,26 +508,20 @@
       curveSegments: lowEnd ? 14 : 32
     };
     const heartGeo = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
-    heartGeo.center();
-    heartGeo.computeVertexNormals();
+    heartGeo.center(); heartGeo.computeVertexNormals();
 
     const crystalMat = new THREE.MeshPhysicalMaterial({
-      color: 0xff95b8,
-      metalness: 0.0,
-      roughness: 0.05,
+      color: 0xff95b8, metalness: 0.0, roughness: 0.05,
       transmission: lowEnd ? 0.0 : 1.0,
-      thickness: 1.5,
-      ior: 1.48,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.04,
+      thickness: 1.5, ior: 1.48,
+      clearcoat: 1.0, clearcoatRoughness: 0.04,
       iridescence: lowEnd ? 0.0 : 0.6,
       iridescenceIOR: 1.35,
       iridescenceThicknessRange: [100, 540],
       attenuationColor: new THREE.Color(0xff1e5a),
       attenuationDistance: 2.2,
       envMapIntensity: 2.4,
-      transparent: lowEnd,
-      opacity: lowEnd ? 0.75 : 1.0,
+      transparent: lowEnd, opacity: lowEnd ? 0.75 : 1.0,
       side: THREE.FrontSide
     });
     const crystal = new THREE.Mesh(heartGeo, crystalMat);
@@ -429,49 +539,41 @@
     heartGroup.add(core);
 
     /* ==========================================================
-       DOUBLE HALO (soft glow layers)
+       HALO
        ========================================================== */
-    function makeGlowTexture(innerAlpha = 0.85, color1 = "255,150,195", color2 = "255,75,140") {
+    function makeGlowTexture(innerAlpha, color1, color2) {
       const s = 256;
       const c = document.createElement("canvas");
       c.width = c.height = s;
       const ctx = c.getContext("2d");
-      const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+      const g = ctx.createRadialGradient(s/2, s/2, 0, s/2, s/2, s/2);
       g.addColorStop(0.00, `rgba(${color1},${innerAlpha})`);
       g.addColorStop(0.22, `rgba(${color2},0.32)`);
       g.addColorStop(0.55, `rgba(170,35,85,0.08)`);
       g.addColorStop(1.00, `rgba(0,0,0,0)`);
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, s, s);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, s, s);
       const t = new THREE.CanvasTexture(c);
       t.colorSpace = THREE.SRGBColorSpace;
       return t;
     }
-
     const haloOuter = new THREE.Sprite(new THREE.SpriteMaterial({
       map: makeGlowTexture(0.55, "255,120,175", "200,50,110"),
-      color: 0xffa5c8,
-      transparent: true, opacity: 0.42,
-      depthWrite: false, depthTest: true,
-      blending: THREE.AdditiveBlending
+      color: 0xffa5c8, transparent: true, opacity: 0.42,
+      depthWrite: false, depthTest: true, blending: THREE.AdditiveBlending
     }));
-    haloOuter.scale.setScalar(8.4);
-    haloOuter.position.z = -2.0;
+    haloOuter.scale.setScalar(8.4); haloOuter.position.z = -2.0;
     scene.add(haloOuter);
 
     const haloInner = new THREE.Sprite(new THREE.SpriteMaterial({
       map: makeGlowTexture(0.95, "255,200,225", "255,90,150"),
-      color: 0xffd4e4,
-      transparent: true, opacity: 0.6,
-      depthWrite: false, depthTest: true,
-      blending: THREE.AdditiveBlending
+      color: 0xffd4e4, transparent: true, opacity: 0.6,
+      depthWrite: false, depthTest: true, blending: THREE.AdditiveBlending
     }));
-    haloInner.scale.setScalar(4.6);
-    haloInner.position.z = -1.1;
+    haloInner.scale.setScalar(4.6); haloInner.position.z = -1.1;
     scene.add(haloInner);
 
     /* ==========================================================
-       FLOATING HEART PARTICLES
+       HEART PARTICLES
        ========================================================== */
     function makeHeartTexture() {
       const s = 128;
@@ -507,14 +609,10 @@
     const pCol = new Float32Array(PARTICLE_COUNT * 3);
     const pSize = new Float32Array(PARTICLE_COUNT);
     const pPhase = new Float32Array(PARTICLE_COUNT);
-
     const palette = [
-      new THREE.Color(0xff6fa5),
-      new THREE.Color(0xff2f6b),
-      new THREE.Color(0xffc2d8),
-      new THREE.Color(0xffffff),
-      new THREE.Color(0xffa8c8),
-      new THREE.Color(0xffd0a8),
+      new THREE.Color(0xff6fa5), new THREE.Color(0xff2f6b),
+      new THREE.Color(0xffc2d8), new THREE.Color(0xffffff),
+      new THREE.Color(0xffa8c8), new THREE.Color(0xffd0a8),
       new THREE.Color(0xff88cc)
     ];
     for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -526,19 +624,18 @@
       pPos[i3 + 2] = Math.sin(theta) * radius - 1.6;
       const col = palette[(Math.random() * palette.length) | 0];
       pCol[i3 + 0] = col.r; pCol[i3 + 1] = col.g; pCol[i3 + 2] = col.b;
-      pSize[i] = 0.020 + Math.random() * 0.070;
+      pSize[i]  = 0.020 + Math.random() * 0.070;
       pPhase[i] = Math.random();
     }
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
-    pGeo.setAttribute("aColor", new THREE.BufferAttribute(pCol, 3));
-    pGeo.setAttribute("aSize", new THREE.BufferAttribute(pSize, 1));
-    pGeo.setAttribute("aPhase", new THREE.BufferAttribute(pPhase, 1));
+    pGeo.setAttribute("aColor",   new THREE.BufferAttribute(pCol, 3));
+    pGeo.setAttribute("aSize",    new THREE.BufferAttribute(pSize, 1));
+    pGeo.setAttribute("aPhase",   new THREE.BufferAttribute(pPhase, 1));
 
     const pMat = new THREE.ShaderMaterial({
       uniforms: {
-        uTime: { value: 0 },
-        uScale: { value: 900 },
+        uTime: { value: 0 }, uScale: { value: 900 },
         uTex: { value: makeHeartTexture() }
       },
       vertexShader: `
@@ -571,23 +668,20 @@
           gl_FragColor = vec4(vColor * t.rgb, t.a * vFade);
         }
       `,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
     });
     const particles = new THREE.Points(pGeo, pMat);
     particles.frustumCulled = false;
     scene.add(particles);
 
     /* ==========================================================
-       TWINKLING STARFIELD
+       TWINKLING STARS
        ========================================================== */
     const SPARKLE_COUNT = isSmall ? 90 : 180;
     const sPos = new Float32Array(SPARKLE_COUNT * 3);
     const sPhase = new Float32Array(SPARKLE_COUNT);
     const sSize = new Float32Array(SPARKLE_COUNT);
     const sSpeed = new Float32Array(SPARKLE_COUNT);
-
     for (let i = 0; i < SPARKLE_COUNT; i++) {
       const i3 = i * 3;
       const r = 1.6 + Math.random() * 3.8;
@@ -597,21 +691,19 @@
       sPos[i3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.95;
       sPos[i3 + 2] = r * Math.cos(phi) * 0.7 - 0.8;
       sPhase[i] = Math.random() * Math.PI * 2;
-      sSize[i] = 0.035 + Math.random() * 0.075;
+      sSize[i]  = 0.035 + Math.random() * 0.075;
       sSpeed[i] = 0.7 + Math.random() * 2.0;
     }
-
     const sGeo = new THREE.BufferGeometry();
     sGeo.setAttribute("position", new THREE.BufferAttribute(sPos, 3));
-    sGeo.setAttribute("aPhase", new THREE.BufferAttribute(sPhase, 1));
-    sGeo.setAttribute("aSize", new THREE.BufferAttribute(sSize, 1));
-    sGeo.setAttribute("aSpeed", new THREE.BufferAttribute(sSpeed, 1));
+    sGeo.setAttribute("aPhase",   new THREE.BufferAttribute(sPhase, 1));
+    sGeo.setAttribute("aSize",    new THREE.BufferAttribute(sSize, 1));
+    sGeo.setAttribute("aSpeed",   new THREE.BufferAttribute(sSpeed, 1));
 
     const sMat = new THREE.ShaderMaterial({
       uniforms: {
-        uTime: { value: 0 },
-        uScale: { value: 900 },
-        uColor: { value: new THREE.Color(0xffe6f0) },
+        uTime: { value: 0 }, uScale: { value: 900 },
+        uColor:     { value: new THREE.Color(0xffe6f0) },
         uColorWarm: { value: new THREE.Color(0xffd4a8) }
       },
       vertexShader: `
@@ -642,7 +734,6 @@
           float d = length(uv) * 2.0;
           float glow = smoothstep(1.0, 0.0, d);
           glow = pow(glow, 1.8);
-          // thin 4-point cross for that "star" feel
           vec2 c = abs(uv) * 2.0;
           float cross = max(0.0, 1.0 - c.x * 22.0) * max(0.0, 1.0 - c.y * 1.4)
                       + max(0.0, 1.0 - c.y * 22.0) * max(0.0, 1.0 - c.x * 1.4);
@@ -653,29 +744,26 @@
           gl_FragColor = vec4(col, alpha);
         }
       `,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
     });
     const sparkles = new THREE.Points(sGeo, sMat);
     sparkles.frustumCulled = false;
     scene.add(sparkles);
 
     /* ==========================================================
-       DREAMY BOKEH BACKDROP
+       BOKEH
        ========================================================== */
     function makeBokehTexture() {
       const s = 128;
       const c = document.createElement("canvas");
       c.width = c.height = s;
       const ctx = c.getContext("2d");
-      const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+      const g = ctx.createRadialGradient(s/2, s/2, 0, s/2, s/2, s/2);
       g.addColorStop(0.00, "rgba(255,190,215,0.85)");
       g.addColorStop(0.35, "rgba(255,120,175,0.30)");
       g.addColorStop(0.70, "rgba(180,60,120,0.08)");
       g.addColorStop(1.00, "rgba(0,0,0,0)");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, s, s);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, s, s);
       const t = new THREE.CanvasTexture(c);
       t.colorSpace = THREE.SRGBColorSpace;
       return t;
@@ -685,16 +773,13 @@
     const bokehCount = isSmall ? 6 : 11;
     for (let i = 0; i < bokehCount; i++) {
       const mat = new THREE.SpriteMaterial({
-        map: bokehTex,
-        transparent: true,
+        map: bokehTex, transparent: true,
         opacity: 0.22 + Math.random() * 0.18,
-        depthWrite: false,
-        depthTest: false,
+        depthWrite: false, depthTest: false,
         blending: THREE.AdditiveBlending
       });
       const sp = new THREE.Sprite(mat);
-      const sc = 1.4 + Math.random() * 3.0;
-      sp.scale.setScalar(sc);
+      sp.scale.setScalar(1.4 + Math.random() * 3.0);
       sp.position.set(
         (Math.random() - 0.5) * 14,
         (Math.random() - 0.5) * 12,
@@ -724,7 +809,70 @@
     updatePointScale();
 
     /* ==========================================================
-       AUDIO — preload, resume inside gesture
+       🌸  FALLING LOVE STICKERS & FLOWERS
+       ========================================================== */
+    const FALLING_EMOJIS = [
+      "💖", "💕", "💗", "💓", "💞", "💘", "💝", "❤️",
+      "🌹", "🌸", "🌺", "🌷", "💐", "🌼", "🩷",
+      "🎀", "💌", "🧡", "💛", "💜"
+    ];
+
+    let fallingInterval = null;
+    let fallingActive = false;
+
+    function spawnFallingItem() {
+      const el = document.createElement("div");
+      el.className = "falling-item";
+      el.textContent = FALLING_EMOJIS[Math.floor(Math.random() * FALLING_EMOJIS.length)];
+
+      const size = 16 + Math.random() * 30;                        // 16px – 46px
+      const duration = 3.5 + Math.random() * 3.0;                  // 3.5s – 6.5s
+      const sway = (Math.random() - 0.5) * 160;                    // -80px … +80px
+      const rotation = (Math.random() < 0.5 ? -1 : 1) * (180 + Math.random() * 360);
+      const left = Math.random() * 100;                            // 0% … 100%
+
+      el.style.left = `${left}%`;
+      el.style.fontSize = `${size}px`;
+      el.style.animationDuration = `${duration}s`;
+      el.style.setProperty("--sway", `${sway}px`);
+      el.style.setProperty("--rot", `${rotation}deg`);
+
+      document.body.appendChild(el);
+
+      // auto-clean
+      const cleanup = setTimeout(() => {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }, duration * 1000 + 200);
+
+      el.addEventListener("animationend", () => {
+        clearTimeout(cleanup);
+        if (el.parentNode) el.parentNode.removeChild(el);
+      });
+    }
+
+    function startFalling() {
+      if (fallingActive) return;
+      fallingActive = true;
+
+      // Immediate burst so it feels responsive
+      for (let i = 0; i < 6; i++) {
+        setTimeout(spawnFallingItem, i * 120);
+      }
+
+      // Then continuous gentle rain
+      fallingInterval = setInterval(spawnFallingItem, 280);
+    }
+
+    function stopFalling() {
+      fallingActive = false;
+      if (fallingInterval) {
+        clearInterval(fallingInterval);
+        fallingInterval = null;
+      }
+    }
+
+    /* ==========================================================
+       AUDIO — preload + resume on tap
        ========================================================== */
     const listener = new THREE.AudioListener();
     camera.add(listener);
@@ -751,14 +899,10 @@
           audioBuffer = await new Promise((resolve, reject) => {
             loader.load(url, resolve, undefined, reject);
           });
-          console.log("✓ Audio loaded:", url);
           setHint("tap to play, my love");
           return;
-        } catch (err) {
-          console.warn("✗ Failed to load:", url, err);
-        }
+        } catch (err) { }
       }
-      console.error("⚠ All audio sources failed");
       setHint("music unavailable", true);
     })();
 
@@ -792,19 +936,140 @@
       sound.setLoop(false);
       sound.setVolume(0.6);
       sound.onEnded = () => {
-        analyser = null;
-        isPlaying = false;
+        analyser = null; isPlaying = false;
         btn.classList.remove("hidden");
         btn.disabled = false;
         setHint("tap to play, my love");
+        stopFalling();                     // ← stop the rain when the song ends
       };
       sound.play();
       isPlaying = true;
-
       analyser = new THREE.AudioAnalyser(sound, 64);
 
       btn.classList.add("hidden");
       hint.classList.add("hidden");
+
+      startFalling();                      // ← start the rain when the song plays
+    });
+
+    /* ==========================================================
+       ❤️  LOVE QUESTION FLOW
+       ========================================================== */
+    const loveQuestion = document.getElementById("love-question");
+    const answerArea = document.getElementById("answer-area");
+    const yesBtn = document.getElementById("yes-btn");
+    const noBtn  = document.getElementById("no-btn");
+
+    const MAX_DODGES = 3;
+    let dodgeCount = 0;
+    let answered = false;
+    let tx = 0, ty = 0;
+
+    loveQuestion.addEventListener("click", () => {
+      loveQuestion.classList.add("hidden");
+      answerArea.classList.remove("hidden");
+    });
+
+    function sendWhatsApp(message) {
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function heartBurst(count = 14) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement("div");
+        heart.textContent = ["💖", "💕", "❤️", "💗", "🌸"][(Math.random() * 5) | 0];
+        heart.style.cssText = `
+          position: fixed; left: 50%; top: 45%;
+          font-size: ${18 + Math.random() * 22}px;
+          pointer-events: none; z-index: 50;
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 1;
+          transition: transform ${1 + Math.random() * 0.8}s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                      opacity   ${1 + Math.random() * 0.8}s ease-out;
+          will-change: transform, opacity;
+        `;
+        document.body.appendChild(heart);
+        requestAnimationFrame(() => {
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 80 + Math.random() * 220;
+          heart.style.transform =
+            `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px)) scale(0.4)`;
+          heart.style.opacity = "0";
+        });
+        setTimeout(() => heart.remove(), 2000);
+      }
+    }
+
+    function handleAnswer(kind) {
+      if (answered) return;
+      answered = true;
+
+      const msg = kind === "yes" ? MSG_YES : MSG_NO;
+      answerArea.innerHTML = `<p class="final-msg">${
+        kind === "yes" ? "💖 My heart is yours 💖" : "🥺 I'll always wait for you 🥺"
+      }</p>`;
+
+      if (kind === "yes") {
+        heartBurst(20);
+        // Also give a little burst of falling items
+        for (let i = 0; i < 10; i++) setTimeout(spawnFallingItem, i * 80);
+      }
+      sendWhatsApp(msg);
+    }
+
+    yesBtn.addEventListener("click", () => handleAnswer("yes"));
+
+    function dodgeNo() {
+      if (dodgeCount >= MAX_DODGES || answered) return;
+      dodgeCount++;
+
+      const pad = 40;
+      const rect = noBtn.getBoundingClientRect();
+      const currCX = rect.left + rect.width / 2;
+      const currCY = rect.top + rect.height / 2;
+
+      const minX = pad + rect.width / 2;
+      const maxX = window.innerWidth - pad - rect.width / 2;
+      const minY = pad + rect.height / 2;
+      const maxY = window.innerHeight - pad - rect.height / 2;
+
+      let newCX = currCX, newCY = currCY;
+      for (let i = 0; i < 40; i++) {
+        newCX = minX + Math.random() * Math.max(1, maxX - minX);
+        newCY = minY + Math.random() * Math.max(1, maxY - minY);
+        if (Math.hypot(newCX - currCX, newCY - currCY) > 160) break;
+      }
+
+      tx += newCX - currCX;
+      ty += newCY - currCY;
+      noBtn.style.transform = `translate(${tx}px, ${ty}px)`;
+
+      noBtn.classList.add("dodging");
+      setTimeout(() => noBtn.classList.remove("dodging"), 420);
+    }
+
+    noBtn.addEventListener("pointerenter", (e) => {
+      if (e.pointerType === "mouse" && dodgeCount < MAX_DODGES && !answered) dodgeNo();
+    });
+
+    noBtn.addEventListener("touchstart", (e) => {
+      if (dodgeCount < MAX_DODGES && !answered) {
+        e.preventDefault();
+        dodgeNo();
+      }
+    }, { passive: false });
+
+    noBtn.addEventListener("click", () => {
+      if (answered) return;
+      if (dodgeCount < MAX_DODGES) { dodgeNo(); return; }
+      handleAnswer("no");
     });
 
     /* ==========================================================
@@ -851,7 +1116,6 @@
       const target = avgFreq / 255;
       beat += (target - beat) * Math.min(1, dt * 10);
 
-      /* --- crystal heart motion --- */
       heartGroup.rotation.y = t * 0.32;
       heartGroup.rotation.x = Math.sin(t * 0.72) * 0.13;
       heartGroup.rotation.z = Math.sin(t * 0.51) * 0.05;
@@ -862,7 +1126,6 @@
       crystal.scale.setScalar(pulse);
       core.scale.setScalar(0.54 * pulse);
 
-      /* --- halo breathing --- */
       haloOuter.scale.setScalar(8.4 * (1 + beat * 0.14));
       haloOuter.material.opacity = 0.35 + beat * 0.25;
       haloInner.scale.setScalar(4.6 * (1 + beat * 0.20));
@@ -870,21 +1133,17 @@
 
       innerLight.intensity = 5 + beat * 26;
 
-      /* --- camera parallax --- */
       camera.position.x += (targetX - camera.position.x) * Math.min(1, dt * 3.0);
       camera.position.y += (targetY - camera.position.y) * Math.min(1, dt * 3.0);
       camera.position.z = camBaseZ;
       camera.lookAt(0, 0, 0);
 
-      /* --- particles --- */
       pMat.uniforms.uTime.value = t;
       particles.rotation.y = t * 0.045;
 
-      /* --- sparkles --- */
       sMat.uniforms.uTime.value = t;
       sparkles.rotation.y = -t * 0.025;
 
-      /* --- bokeh drift --- */
       for (let i = 0; i < bokehSprites.length; i++) {
         const sp = bokehSprites[i];
         const d = sp.userData;
